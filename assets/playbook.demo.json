@@ -4,13 +4,15 @@
   "lessons": [
     {
       "id": "L-001",
-      "pattern": "PDCA验收清单的 command 项内嵌多行 Python（JSON里写 \\n）会被当字面字符致语法错",
-      "cause": "JSON 字符串里的 \\n 传给 python -c 时是字面反斜杠n不是真换行，for 循环体首行报 SyntaxError；门禁把这种 command 判 FAIL，产物其实没错（本轮 LINK-01/QA-01 实测）",
-      "method": "凡需要多行逻辑的验证，一律写成独立 .py 脚本落 qa/，command 只写『python 脚本路径 参数』；脚本内用真换行、输出 scanned=N/expected=M，既免转义又复现",
-      "verify": "读 qa/ 下的验证脚本，用真换行跑一次并检查输出含 scanned=N/expected=M",
-      "when": ["PDCA清单command验证/含for或多行python/JSON内嵌脚本"],
+      "pattern": "用本地语音识别稿做蒸馏时，人名/外文专名同音错字须逐条核验并登记",
+      "cause": "本地 ASR 在中文数字还原上准，但人名与外文专名同音误识率高；不核验直接蒸馏会把错术语固化进笔记，并被后续条目引用扩散",
+      "method": "成稿前逐条纠正人名/专名；一手出处用联网核验，查不到写『未获取』；错字对照表写入项目的来源与素材附件区，禁把 ASR 原样当术语依据",
+      "verify": "成稿中出现的每个专名都能在错字对照表里找到对应条目或来源引用",
+      "when": [
+        "语音识别稿蒸馏/含专名的教育或思想类内容"
+      ],
       "status": "candidate",
-      "applied": 1,
+      "applied": 2,
       "effective": 1,
       "version": 1,
       "evidence_log": []
@@ -21,7 +23,9 @@
       "cause": "合规写法允许全路径+别名 [[目录/文件|别名]]，正则若写 \\[目标\\]\\] 会把带别名的正确链接误判为 FAIL，产生假失败（本轮实测）",
       "method": "正则只匹配前缀 \\[\\[目标（不带结尾 \\]\\]），或直接用 command 验证器按 target 前缀判定；与校验脚本的 ('[[%s' % target) in text 判据保持一致",
       "verify": "构造一条带别名的合法链接与一条错误链接，验证器必须只对后者判 FAIL",
-      "when": ["PDCA验收清单含双链检查/笔记库全路径链接校验"],
+      "when": [
+        "PDCA验收清单含双链检查/笔记库全路径链接校验"
+      ],
       "status": "candidate",
       "applied": 2,
       "effective": 1,
@@ -30,13 +34,15 @@
     },
     {
       "id": "L-003",
-      "pattern": "用本地语音识别稿做蒸馏时，人名/外文专名同音错字须逐条核验并登记",
-      "cause": "本地 ASR 在中文数字还原上准，但人名与外文专名同音误识率高；不核验直接蒸馏会把错术语固化进笔记，并被后续条目引用扩散",
-      "method": "成稿前逐条纠正人名/专名；一手出处用联网核验，查不到写『未获取』；错字对照表写入项目的来源与素材附件区，禁把 ASR 原样当术语依据",
-      "verify": "成稿中出现的每个专名都能在错字对照表里找到对应条目或来源引用",
-      "when": ["语音识别稿蒸馏/含专名的教育或思想类内容"],
+      "pattern": "PDCA验收清单的 command 项内嵌多行 Python（JSON里写 \\n）会被当字面字符致语法错",
+      "cause": "JSON 字符串里的 \\n 传给 python -c 时是字面反斜杠n不是真换行，for 循环体首行报 SyntaxError；门禁把这种 command 判 FAIL，产物其实没错（本轮 LINK-01/QA-01 实测）",
+      "method": "凡需要多行逻辑的验证，一律写成独立 .py 脚本落 qa/，command 只写『python 脚本路径 参数』；脚本内用真换行、输出 scanned=N/expected=M，既免转义又复现",
+      "verify": "读 qa/ 下的验证脚本，用真换行跑一次并检查输出含 scanned=N/expected=M",
+      "when": [
+        "PDCA清单command验证/含for或多行python/JSON内嵌脚本"
+      ],
       "status": "candidate",
-      "applied": 2,
+      "applied": 1,
       "effective": 1,
       "version": 1,
       "evidence_log": []
@@ -47,7 +53,9 @@
       "cause": "检查脚本对正文禁用模型控制符等噪声，但来源说明里在解释『已去掉控制符』时写出该符号字面量，被自己的规则判 FAIL（本轮 SET-01 实测）",
       "method": "说明性文字用自然语言描述噪声（如『尖括号竖线包裹的语言标记』）而非写出符号字面量；附件保留原样不受此限。写规则时同时想清『谁会合法提到它』",
       "verify": "在正文写一段描述该噪声的说明文字，验证器必须判 PASS",
-      "when": ["写验证器禁用词/噪声检查/文档需引用被禁符号"],
+      "when": [
+        "写验证器禁用词/噪声检查/文档需引用被禁符号"
+      ],
       "status": "candidate",
       "applied": 0,
       "effective": 0,
