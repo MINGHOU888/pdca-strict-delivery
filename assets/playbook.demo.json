@@ -61,6 +61,52 @@
       "effective": 0,
       "version": 1,
       "evidence_log": []
+    },
+    {
+      "id": "L-005",
+      "pattern": "对外发布示例文件时，若对内容做了脱敏改写，条目编号必须按语义锚点重新对齐真实来源，否则文档引用会指向错误条目",
+      "cause": "写 assets/playbook.demo.json 时把 L-001 与 L-003 的内容对调了编号（内容没错、编号错位），且因脱敏改写（wikilink→双链、抖音→语音识别稿）导致字符串前缀不再相同，靠前缀比对无法自动发现；README 当时引用的 L-003 实际指向另一条",
+      "method": "脱敏改写后必须按语义锚点（不重叠的特征词组）逐条对齐真实编号，并把对齐关系写成可执行校验项；验证器不能用会因改写失效的字符串前缀做判定，改用互斥锚点词组",
+      "verify": "python qa/check_sl_article.py --check-id-align --check-demo-align，两项都须 scanned=4/expected=4 PASS（前者比编号与语义锚点一致，后者比 README 引用与 demo 同编号内容一致）",
+      "when": [
+        "对外发布示例文件/脱敏改写/条目编号与引用对齐"
+      ],
+      "source": "",
+      "status": "candidate",
+      "version": 1,
+      "applied": 0,
+      "effective": 0,
+      "history": [
+        {
+          "at": "2026-11-20T01:40:10+08:00",
+          "event": "created"
+        }
+      ],
+      "created": "2026-11-20T01:40:10+08:00",
+      "updated": "2026-11-20T01:40:10+08:00"
+    },
+    {
+      "id": "L-006",
+      "pattern": "验证器自身缺陷与产物缺陷必须区分：判 FAIL 时先确认是产物错还是验证器错，验证器误报要当场修验证器而不是改产物迁就",
+      "cause": "本轮 3 次 FAIL 全是验证器缺陷：markdown 标题跳级检查把代码块内的 shell 注释（# WorkBuddy Skill）当标题；语义锚点表用了泛词 command 导致误伤链接那条；锚点词在正文里只出现一次而不在标题，导致无法判定。改产物迁就验证器会把文档改错",
+      "method": "验证器误报的三个修法：1) 标题检查先剥掉围栏代码块；2) 锚点用互斥且不易撞车的组合词（内嵌多行/全路径加别名），不用单字泛词；3) 锚点判定的取样范围要对准条目边界（按小节切段），不按固定字符窗口",
+      "verify": "python qa/check_sl_article.py --check-format --check-demo-align，两项都须 scanned=N/expected=N PASS；且产物文件内容未被验证器修复过程改动（git blob sha 与发布源一致）",
+      "when": [
+        "写验收验证器/门禁误报/区分产物缺陷与验证器缺陷"
+      ],
+      "source": "",
+      "status": "candidate",
+      "version": 1,
+      "applied": 0,
+      "effective": 0,
+      "history": [
+        {
+          "at": "2026-11-20T01:40:18+08:00",
+          "event": "created"
+        }
+      ],
+      "created": "2026-11-20T01:40:18+08:00",
+      "updated": "2026-11-20T01:40:18+08:00"
     }
   ]
 }
