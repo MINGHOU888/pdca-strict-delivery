@@ -1,4 +1,6 @@
-# pdca-strict-delivery
+# 自学习全量交付PDCA
+
+> 英文仓库名 / Skill 目录名：`pdca-strict-delivery`（安装名保持不变）
 
 把"做完"从自称变成有清单、有证据、有门禁、可复核的闭环。这是一个给 AI Agent 用的工作方法 Skill，治三个老毛病：抽样代替全量、称完成却留尾巴、被指出问题后只挑着改。
 
@@ -63,7 +65,7 @@
 
 ### 真实案例集
 
-下面四条是完整的"门禁抓出来 → 提炼入库 → 下次被挡住"链路，全部来自真实项目运行（原文见 `assets/playbook.demo.json`，另有技术长文 [`docs/self-learning-deep-dive.md`](docs/self-learning-deep-dive.md) 讲透实现原理）。
+下面 7 条是完整的"门禁抓出来 → 提炼入库 → 下次被挡住"链路，全部来自真实项目运行（原文见 `assets/playbook.demo.json`，另有技术长文 [`docs/self-learning-deep-dive.md`](docs/self-learning-deep-dive.md) 讲透实现原理）。前 4 条是具体缺陷的教训，后 3 条是关于这套机制本身的**元经验**。
 
 **L-001 · 语音识别稿的专名同音错字**
 - **现象**：转写稿里的人名、外文专名同音错字，被当成正确术语固化进笔记，还会被后续条目引用扩散。
@@ -93,7 +95,7 @@
 
 ### 元经验：关于"怎么用这套机制"本身
 
-上面四条是具体缺陷的教训。下面两条是**元经验**——它们关于的是怎么正确使用这套自学习机制本身，是在这个项目里被这套机制抓出来的：
+上面四条是具体缺陷的教训。下面三条是**元经验**——它们关于的是怎么正确使用这套自学习机制本身，是在这个项目里被这套机制抓出来的：
 
 **L-005 · 脱敏改写后编号必须重新对齐**
 - **现象**：对外发布的示例文件里，条目编号和内容对调了——内容本身没错，但 README 引用的 `L-003` 实际指向另一条经验。
@@ -107,13 +109,13 @@
 - **最优解**：判 FAIL 时先确认是产物错还是验证器错，**验证器误报要当场修验证器，而不是改产物去迁就它**——迁就的结果是把文档改错。
 - **防复发**："误报先查验证器"成为处理门禁 FAIL 的第一步；修完必须重跑整份清单确认全局仍达标。
 
-这两条（元经验）同样记在 `assets/playbook.demo.json` 里。
-
 **L-007 · 换掉同名 Release 资产后，公网回下载可能拿到旧内容**
 - **现象**：资产已替换成新版，但校验脚本从公网下载回来的还是旧内容——用 curl 手测却是新的，两个工具结果不一致。
 - **根因**：资产存储端点对同名文件有缓存滞后，重定向到的签名地址仍指向旧对象；不同 HTTP 客户端的缓存协商行为不同。
 - **最优解**：回下载校验一律带 `Cache-Control: no-cache` 并加查询串破缓存，且**做多轮重试直到内容与本地一致**；不要用单次下载结果判定资产内容正确。
 - **防复发**："公网回下载"类校验项固定带破缓存参数与重试循环。
+
+这三条（元经验）同样记在 `assets/playbook.demo.json` 里。
 
 ### 三条命令跑起来
 
@@ -130,7 +132,7 @@ python scripts/playbook.py check qa/playbook.json
 
 **零 token**：经验库的读写、相似度匹配、状态机晋升全部由本地 Python 脚本完成，运行期不调用任何大模型。
 
-**新用户从空开始**：仓库里的 `qa/playbook.json` 初始是空的（`lessons: []`），你的经验库由你自己的实战长出来。想先看看一条经验长什么样，`assets/playbook.demo.json` 里有 4 条真实记录可以直接参考格式。
+**新用户从空开始**：仓库里的 `qa/playbook.json` 初始是空的（`lessons: []`），你的经验库由你自己的实战长出来。想先看看一条经验长什么样，`assets/playbook.demo.json` 里有 7 条真实记录可以直接参考格式。
 
 ## 安装
 
@@ -150,7 +152,7 @@ git clone <你的仓库地址> ~/.workbuddy/skills/pdca-strict-delivery
 
 ### 方式二：当作通用提示词使用（不依赖任何工具）
 
-直接把仓库根目录的 `全量交付PDCA.md` 里 `---` 之间的整段，复制到你常用 AI 的每次任务开头。没有脚本环境也能用，靠文字约定达成同样的闭环。
+直接把仓库根目录的 `自学习全量交付PDCA.md` 里 `---` 之间的整段，复制到你常用 AI 的每次任务开头。没有脚本环境也能用，靠文字约定达成同样的闭环。
 
 ## 使用
 
@@ -170,7 +172,7 @@ git clone <你的仓库地址> ~/.workbuddy/skills/pdca-strict-delivery
 ```
 pdca-strict-delivery/
 ├── SKILL.md                  # 核心规则（WorkBuddy Skill 入口）
-├── 全量交付PDCA.md           # 无工具依赖的通用提示词版
+├── 自学习全量交付PDCA.md      # 无工具依赖的通用提示词版
 ├── README.md                 # 本文件
 ├── LICENSE                   # MIT 协议（英文原文，具法律效力）
 ├── LICENSE-zh.md             # MIT 协议中文版（大白话 + 中文译本，方便看懂）
@@ -191,12 +193,12 @@ pdca-strict-delivery/
 ├── assets/
 │   ├── acceptance_checklist.template.json
 │   ├── playbook.template.json
-│   ├── playbook.demo.json     # 真实经验条目示例（4 条，可参考格式）
+│   ├── playbook.demo.json     # 真实经验条目示例（7 条，可参考格式）
 │   ├── self_check_report.template.md
 │   ├── registry.template.json
 │   ├── handover.template.md
 │   ├── backup_template.py
-│   └── 全量交付PDCA.md       # 提示词副本（与根目录同源）
+│   └── 自学习全量交付PDCA.md  # 提示词副本（与根目录同源）
 └── qa/
     └── playbook.json         # 空经验库，随用随沉淀
 ```
