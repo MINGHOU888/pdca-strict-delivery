@@ -1,0 +1,88 @@
+{
+  "_usage": "列清单前按九维逐一过：数量/内容/格式/结构/保存路径+命名/边界与异常/依赖与权限/可复现/可回滚，每维设覆盖度+质量+交付项，无关维标不适用。coverage 优先用 derived_from 从真实产物反推，manual 控制在30%内。下方 id 前缀即维度分组示例。",
+  "task": "扫描版 PDF《XXX 资料汇编》全量整理并落库到 Obsidian 学习笔记",
+  "round": 1,
+  "universe": {
+    "description": "任务全集的边界，必须是可枚举的确定数字",
+    "total": 47,
+    "unit": "页",
+    "source": "从 PDF 元数据读取的总页数"
+  },
+  "items": [
+    {
+      "id": "COV-01",
+      "desc": "全集覆盖：47 页全部产出对应笔记，无遗漏",
+      "verify": {
+        "type": "coverage",
+        "expected": 47,
+        "derived_from": "output/p*.md",
+        "id_regex": "p(\\d+)"
+      },
+      "status": "pending",
+      "evidence": ""
+    },
+    {
+      "id": "TEXT-01",
+      "desc": "第 1 页 OCR 文本已提取且非空白",
+      "verify": {
+        "type": "file_contains",
+        "path": "output/p001.md",
+        "pattern": "概念"
+      },
+      "status": "pending",
+      "evidence": ""
+    },
+    {
+      "id": "TABLE-01",
+      "desc": "所有表格已转为 Markdown 表格（数量核对）",
+      "verify": {
+        "type": "command",
+        "cmd": "python scripts/check_tables.py output/",
+        "timeout": 120
+      },
+      "status": "pending",
+      "evidence": ""
+    },
+    {
+      "id": "LIB-01",
+      "desc": "47 篇笔记已写入 Obsidian 库指定目录",
+      "verify": {
+        "type": "count",
+        "glob": "vault/Notes/资料汇编/*.md",
+        "exact": 47
+      },
+      "status": "pending",
+      "evidence": ""
+    },
+    {
+      "id": "LIB-02",
+      "desc": "Obsidian 索引/MOC 已更新并含入口链接",
+      "verify": {
+        "type": "file_contains",
+        "path": "vault/MOC/资料汇编.md",
+        "pattern": "[[资料汇编"
+      },
+      "status": "pending",
+      "evidence": ""
+    },
+    {
+      "id": "QA-01",
+      "desc": "缺陷同类全量扫描：无乱码、无空白占位、无 OCR 残留标记",
+      "verify": {
+        "type": "command",
+        "cmd": "python scripts/scan_defects.py output/ --strict"
+      },
+      "status": "pending",
+      "evidence": ""
+    },
+    {
+      "id": "HUMAN-01",
+      "desc": "抽样人工复核 3 页的语义准确性（标注为需人工确认）",
+      "verify": {
+        "type": "manual"
+      },
+      "status": "pending",
+      "evidence": ""
+    }
+  ]
+}

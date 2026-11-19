@@ -1,0 +1,45 @@
+{
+  "project": "示例项目（复制后改这里）",
+  "base": "<项目根目录>",
+  "python": "python",
+  "_usage": "第1层：任务清单。按项目改 batches/tasks。requires_model=true 的任务由模型/人执行，引擎只登记不跑命令。",
+  "batches": [
+    {
+      "id": "B1",
+      "title": "第一批：机械生成（脚本做）",
+      "tasks": [
+        {
+          "id": "gen-skeleton",
+          "cmd": "{python} scripts/gen_skeleton.py --out output",
+          "requires_model": false,
+          "desc": "按清单批量生成卡片骨架/frontmatter/编号",
+          "timeout": 300
+        }
+      ]
+    },
+    {
+      "id": "B2",
+      "title": "第二批：语义填充（模型做）",
+      "tasks": [
+        {
+          "id": "fill-content",
+          "requires_model": true,
+          "desc": "逐张写内容：这章讲什么、可迁移判断、原文抓手"
+        }
+      ]
+    },
+    {
+      "id": "B3",
+      "title": "第三批：机械校验（脚本做）",
+      "tasks": [
+        {
+          "id": "verify-all",
+          "cmd": "{python} qa/check_all.py",
+          "requires_model": false,
+          "desc": "格式/页码/双链/数量/边界全量校验",
+          "timeout": 300
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "note": "经验库：C 阶段沉淀、P 阶段注入。用 scripts/playbook.py 操作，勿手改结构。",
+  "lessons": [
+    {
+      "id": "L-001",
+      "pattern": "表格转 Markdown 时合并单元格内容丢失",
+      "cause": "按行逐格读取，未处理 rowspan/colspan",
+      "method": "先解析所有 rowspan/colspan 建立占位网格，再输出 Markdown 表格",
+      "verify": "产物中合并单元格数量 = 原文解析出的合并单元格数量",
+      "when": ["表格", "文档", "OCR"],
+      "source": "PDF 资料整理，第 2 轮缺陷",
+      "status": "candidate",
+      "version": 1,
+      "applied": 0,
+      "effective": 0,
+      "history": [
+        { "at": "2026-01-01T00:00:00+08:00", "event": "created" }
+      ],
+      "created": "2026-01-01T00:00:00+08:00",
+      "updated": "2026-01-01T00:00:00+08:00"
+    }
+  ]
+}
